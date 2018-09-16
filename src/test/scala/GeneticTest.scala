@@ -7,11 +7,17 @@ import org.scalatest.FreeSpec
 class GeneticTest extends FreeSpec {
 
   "Correctnes" - {
-    "should have solution" in {
-      val geneBase = "papapa"
-      val geneSize = 10
-     val target = "How many monkeys does it take to produce Shakespeare?"
-      def fitnes(DNA: DNA) = 0.0
+    "should have good solution" in {
+      val geneBase = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !?"
+      val target = "How many monkeys does it take to produce Shakespeare?"
+      val geneSize = target.length
+      def fitnes = (dna: DNA) => {
+        dna.gene
+          .zip(target)
+          .filter(item => item._1 == item._2)
+          .size
+          .toDouble / geneSize
+      }
       val mutationRate = 3
       assert(
         new GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate)
@@ -19,14 +25,41 @@ class GeneticTest extends FreeSpec {
           .maxScore == 1)
     }
 
-    "should have impruving" in {
-      assert(Set.empty.size == 0)
+    "should have at least some solution" in {
+      val geneBase = "abcdefghijk"
+      val target = "How many monkeys does it take to produce Shakespeare?"
+      val geneSize = target.length
+      def fitnes = (dna: DNA) => {
+        dna.gene
+        .zip(target)
+        .filter(item => item._1 == item._2)
+        .size
+        .toDouble / geneSize
+      }
+      val mutationRate = 3
+      assert(
+        new GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate)
+          .runEvalution()
+          .maxScore > 0)
     }
 
-    "don't have solution" in {
-      assertThrows[NoSuchElementException] {
-        Set.empty.head
+    "should don't have any solution" in {
+      val geneBase = "-1232342"
+      val target = "How many monkeys does it take to produce Shakespeare?"
+      val geneSize = target.length
+      def fitnes = (dna: DNA) => {
+        dna.gene
+        .zip(target)
+        .filter(item => item._1 == item._2)
+        .size
+        .toDouble / geneSize
       }
+      val mutationRate = 3
+      assertThrows[Exception](
+        new GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate)
+          .runEvalution()
+          .maxScore)
     }
+
   }
 }
