@@ -1,64 +1,43 @@
 # Parallel Genetic Algorithm with scala
-initial version, try to using FP not fully)
 
+Create for personal use (train my bots on codingame.com and another competitions)
 
-i create for persanal use (train my bots on codingame and over competitions)
+my goal was to create **easy to use** and **performance** solution 
 
-my goal was to create easy to reuse solution
+(as evaluating function can be complex, so it's important to make less
+evaluation of fitness function as possible)
+current solution linearly scale with CPU cores 
 
-second goal is perfomance (as evaluating function can be complex, so it's important to make as small
-evaluatin as possible to evolve)
+with small data and simple fitness function performance usual don't have any matter
+also performance for parallel algorithm can be even worse
 
-with small data and simple fittness function perfomance usual don't have any 
-and perfomance for parallel solution can be wors
-
-but than data is growing and fitness function is become really complex (for excample fitness function relaing on gameSimulation resultat)
-parallel working is huge, also less ammount of fitness evaluation is important
-
-само собой у вас нет никакого ТАРГЕТА, если бы вы знали таргет
-вам не нужна была бы эволюция, эволюцию используете чтоб улучшать 
-решение постепенно, и если вы знаете как оценить улучшение, тогда можно
-приложить эволюционный алгоритм
-
-поэтому в настройках моего алгоритма отсутствует таргет, 
-можно настраивать только функцию оценки результата
-
-я старался по максимуму оптимизировать параметры (размер отсечения
-размер генерации популяции, размер отсечения популяции, размер мутации
-
-)
-
-## correctnes testing
-
-use `sbt test`
-
-usual string permutation and similarity evaluation
-
-## perfomance evaluating
-
-so i increase working time of fitness function with dummy operation like `sleep`
-(only in tests)
-to optimase solution to havy real workflow (not just string permutation and evaluating string similaryty as usual everyone do)
-
-use `sbt perfomance`
+but than data is growing and fitness function is become really complex (for example fitness function relaying on game simulation result)
+there parallel working is huge, also less ammount of fitness evaluation is important
 
 ## using
 
-to reuse you need first discrabe 
-вы просто указываете базу для генерации генов
-какой длинны ген нужен
-а также функцию оценки эволюции
+to make use GeneticAlgoritm just use 
 
-пример ->
+```scala
+     GeneticAlgorithm(geneBase, geneSize, fitness, mutationRate)
+```
+- `geneBase - baze whitch is used to generate Genes`
+- `geneSize - numbers element of resulting Gene`
+- `fitness - your evaluating function from input DNA to Double`
+- `mutationRate - percent of random mutation (from 1 to 100) [optional]`
 
-если это параметры функции - вы указываете несколько градаций этого параметра
-для примера Сек("-6", "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4", "5", "6")
-так что можно использовать не только одно буквенные, но и много символьные комбинации в качестве
-одного элемента гена
+[see sample in AlgoTest](/src/test/scala/AlgoTest.scala)
 
-## идеи для развития
-есть мысль добавить еще градиентный спуск по какому либо из параметров
-идеи но пока нет задачи усложнять решение, и делать его более сложным
+## correctness testing
 
-чтоб тоже можно было удобно указать какой параметр можно просто варьировать
-как его вариьировать ну и схему как можно оценить типа градиентного спуска параметр и сделать попытку сразу его подобрать
+use `sbt testOnly Algotest`
+
+usual string permutation and similarity evaluation to check correctness
+
+## performance evaluating
+
+I increase working time of fitness function with dummy operation like `sleep`
+(only in tests)
+in order to optimise solution to real workflow
+
+use `sbt testOnly Perfomance`
