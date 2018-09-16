@@ -10,8 +10,8 @@ class GeneticAlgorithm(alpha: String,
 
   val size = alpha.size
 
-  def randomDNA = (n:Int)=>
-    DNA((1 to n).map(x => alpha(Random.nextInt(size))).mkString)
+  def randomDNA =
+    (n: Int) => DNA((1 to n).map(x => alpha(Random.nextInt(size))).mkString)
 
   def createPopulation() = {
     val MAX_POOL_SIZE = 1000000
@@ -24,7 +24,7 @@ class GeneticAlgorithm(alpha: String,
   }
 
   def runEvalution() = {
-    val MAX_GENERATION_WITHOUT_EVALUTION=4
+    val MAX_GENERATION_WITHOUT_EVALUTION = 4
     var notHaveEvalution = 0
     val population = createPopulation()
     while (notHaveEvalution < MAX_GENERATION_WITHOUT_EVALUTION) {
@@ -32,15 +32,18 @@ class GeneticAlgorithm(alpha: String,
         .evaluate()
         .killWeak()
         .makeNextGeneration()
-      if (population.lastMaxScore < population.maxScore) notHaveEvalution = 0 else notHaveEvalution+=1
+      if (population.lastMaxScore < population.maxScore) notHaveEvalution = 0
+      else notHaveEvalution += 1
     }
     population
   }
 
 }
 
-//object GeneticAlgorithm {
-
-//(dnaBase: DNA, dnaSize: Int, mesure: DNA => Double)
-//def apply(mutationRate: Int = 1) = new GeneticAlgorithm()
-//}
+object GeneticAlgorithm {
+  def apply(alpha: String,
+            dnaSize: Int,
+            fitnes: DNA => Double,
+            mutationRate: Int = 3) =
+    new GeneticAlgorithm(alpha, dnaSize, fitnes, mutationRate).runEvalution()
+}

@@ -7,58 +7,34 @@ import org.scalatest.FreeSpec
 class GeneticTest extends FreeSpec {
 
   "Correctnes" - {
+
+    val target = "How many monkeys does it take to produce Shakespeare?"
+    val geneSize = target.length
+    val mutationRate = 3
+    def fitnes = (dna: DNA) => {
+      dna.gene
+        .zip(target)
+        .filter(item => item._1 == item._2)
+        .size
+        .toDouble / geneSize
+    }
+
     "should have good solution" in {
       val geneBase = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !?"
-      val target = "How many monkeys does it take to produce Shakespeare?"
-      val geneSize = target.length
-      def fitnes = (dna: DNA) => {
-        dna.gene
-          .zip(target)
-          .filter(item => item._1 == item._2)
-          .size
-          .toDouble / geneSize
-      }
-      val mutationRate = 3
       assert(
-        new GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate)
-          .runEvalution()
-          .maxScore == 1)
+        GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate).maxScore == 1)
     }
 
     "should have at least some solution" in {
       val geneBase = "abcdefghijk"
-      val target = "How many monkeys does it take to produce Shakespeare?"
-      val geneSize = target.length
-      def fitnes = (dna: DNA) => {
-        dna.gene
-        .zip(target)
-        .filter(item => item._1 == item._2)
-        .size
-        .toDouble / geneSize
-      }
-      val mutationRate = 3
       assert(
-        new GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate)
-          .runEvalution()
-          .maxScore > 0)
+        GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate).maxScore > 0)
     }
 
     "should don't have any solution" in {
       val geneBase = "-1232342"
-      val target = "How many monkeys does it take to produce Shakespeare?"
-      val geneSize = target.length
-      def fitnes = (dna: DNA) => {
-        dna.gene
-        .zip(target)
-        .filter(item => item._1 == item._2)
-        .size
-        .toDouble / geneSize
-      }
-      val mutationRate = 3
       assertThrows[Exception](
-        new GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate)
-          .runEvalution()
-          .maxScore)
+        GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate))
     }
 
   }
