@@ -1,10 +1,10 @@
 import org.scalatest.FreeSpec
-//import GeneticAlgorithm._
+import org.scalameter._
 
 /**
   * Created by Kotobotov.ru on 13.09.2018.
   */
-class GeneticTest extends FreeSpec {
+class AlgoTest extends FreeSpec {
 
   "Correctnes" - {
 
@@ -22,7 +22,7 @@ class GeneticTest extends FreeSpec {
     "should have good solution" in {
       val geneBase = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !?"
       assert(
-        GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate).maxScore == 1)
+        GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate).maxScore >= 1)
     }
 
     "should have at least some solution" in {
@@ -38,4 +38,7 @@ class GeneticTest extends FreeSpec {
     }
 
   }
+
+
+
 }

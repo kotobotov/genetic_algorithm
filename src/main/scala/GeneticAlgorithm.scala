@@ -14,7 +14,7 @@ class GeneticAlgorithm(alpha: String,
     (n: Int) => DNA((1 to n).map(x => alpha(Random.nextInt(size))).mkString)
 
   def createPopulation() = {
-    val MAX_POOL_SIZE = 1000000
+    val MAX_POOL_SIZE = 10000
     val recomendedSize =
       (if (math.pow(alpha.size * dnaSize, 2) > MAX_POOL_SIZE) MAX_POOL_SIZE
        else math.pow(alpha.size * dnaSize, 2)).toInt
