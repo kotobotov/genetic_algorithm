@@ -10,7 +10,8 @@ class Population(size: Int,
                  mutationRate: Int) {
   self =>
   var maxScore = 0.0
-var generation = 0
+  var lastMaxScore = 0.0
+  var generation = 0
   var pool = createPool
 
   def createPool = (0 to size).map(_ => randomDNA(dnaSize)).toParArray
@@ -60,7 +61,7 @@ var generation = 0
     pool = pool.map { dna =>
       dna.copy(score = fitness(dna))
     }
-    generation +=1
+    generation += 1
     self
   }
 
@@ -71,6 +72,7 @@ var generation = 0
       .sortBy(-_.score)
       .take(1000)
       .par
+    lastMaxScore = maxScore
     maxScore = pool.head.score
     println(s"generation: $generation score: $maxScore gene: ${pool.head.gene}")
     self

@@ -13,8 +13,6 @@ class GeneticAlgorithm(alpha: String,
   def randomDNA = (n:Int)=>
     DNA((1 to n).map(x => alpha(Random.nextInt(size))).mkString)
 
-  val target = "nujno nayti stroku dlay raboti"
-
   def createPopulation() = {
     val MAX_POOL_SIZE = 1000000
     val recomendedSize =
@@ -25,22 +23,16 @@ class GeneticAlgorithm(alpha: String,
     myPool
   }
 
-  //def fitness(dna: DNA) = {
-  //  dna.gene
-  //    .zip(target)
-  //    .filter(item => item._1 == item._2)
-  //    .size
-  //    .toDouble / dnaSize
-  //}
-
   def runEvalution() = {
+    val MAX_GENERATION_WITHOUT_EVALUTION=4
+    var notHaveEvalution = 0
     val population = createPopulation()
-    while (population.maxScore < 1.0) {
-      println("best gene : " + population.pool.head.gene)
+    while (notHaveEvalution < MAX_GENERATION_WITHOUT_EVALUTION) {
       population
         .evaluate()
         .killWeak()
         .makeNextGeneration()
+      if (population.lastMaxScore < population.maxScore) notHaveEvalution = 0 else notHaveEvalution+=1
     }
     population
   }
