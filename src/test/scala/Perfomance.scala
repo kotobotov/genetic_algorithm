@@ -8,7 +8,7 @@ class Perfomance extends FreeSpec {
   val target = "How many monkeys does it take to produce Shakespeare?"
   val geneSize = target.length
   val mutationRate = 3
-  def fitnes = (dna: DNA) => {
+  def fitness = (dna: DNA) => {
     Thread.sleep(1)
     dna.gene
       .zip(target)
@@ -32,7 +32,7 @@ class Perfomance extends FreeSpec {
 
     val geneBase = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !?"
     val seqtime = standardConfig measure {
-      seqResult = GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate).maxScore == 1
+      seqResult = GeneticAlgorithm(geneBase, geneSize, fitness, mutationRate).maxScore == 1
     }
     println(s"sequential result = $seqResult")
     println(s"sequential balancing time: $seqtime ms")

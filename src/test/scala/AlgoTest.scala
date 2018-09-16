@@ -11,7 +11,7 @@ class AlgoTest extends FreeSpec {
     val target = "How many monkeys does it take to produce Shakespeare?"
     val geneSize = target.length
     val mutationRate = 3
-    def fitnes = (dna: DNA) => {
+    def fitness = (dna: DNA) => {
       dna.gene
         .zip(target)
         .filter(item => item._1 == item._2)
@@ -22,19 +22,19 @@ class AlgoTest extends FreeSpec {
     "should have good solution" in {
       val geneBase = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !?"
       assert(
-        GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate).maxScore >= 1)
+        GeneticAlgorithm(geneBase, geneSize, fitness, mutationRate).maxScore >= 1)
     }
 
     "should have at least some solution" in {
       val geneBase = "abcdefghijk"
       assert(
-        GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate).maxScore > 0)
+        GeneticAlgorithm(geneBase, geneSize, fitness, mutationRate).maxScore > 0)
     }
 
     "should don't have any solution" in {
       val geneBase = "-1232342"
       assertThrows[Exception](
-        GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate))
+        GeneticAlgorithm(geneBase, geneSize, fitness, mutationRate))
     }
 
   }

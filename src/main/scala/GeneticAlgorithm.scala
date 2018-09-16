@@ -5,7 +5,7 @@ import scala.util.Random
   */
 class GeneticAlgorithm(alpha: String,
                        dnaSize: Int,
-                       fitnes: DNA => Double,
+                       fitness: DNA => Double,
                        mutationRate: Int) {
 
   val size = alpha.size
@@ -19,7 +19,7 @@ class GeneticAlgorithm(alpha: String,
       (if (math.pow(alpha.size * dnaSize, 2) > MAX_POOL_SIZE) MAX_POOL_SIZE
        else math.pow(alpha.size * dnaSize, 2)).toInt
     val myPool =
-      new Population(recomendedSize, dnaSize, randomDNA, fitnes, mutationRate)
+      new Population(recomendedSize, dnaSize, randomDNA, fitness, mutationRate)
     myPool
   }
 
@@ -43,7 +43,7 @@ class GeneticAlgorithm(alpha: String,
 object GeneticAlgorithm {
   def apply(alpha: String,
             dnaSize: Int,
-            fitnes: DNA => Double,
+            fitness: DNA => Double,
             mutationRate: Int = 3) =
-    new GeneticAlgorithm(alpha, dnaSize, fitnes, mutationRate).runEvalution()
+    new GeneticAlgorithm(alpha, dnaSize, fitness, mutationRate).runEvalution()
 }
