@@ -12,7 +12,7 @@ with small data and simple fitness function performance usual don't have any mat
 also performance for parallel algorithm can be even worse
 
 but than data is growing and fitness function is become really complex (for example fitness function relaying on game simulation result)
-there parallel working is huge, also less ammount of fitness evaluation is important
+there parallel working is huge, also less amount of fitness evaluation is important
 
 ## using
 
@@ -40,4 +40,4 @@ I increase working time of fitness function with dummy operation like `sleep`
 (only in tests)
 in order to optimise solution to real workflow
 
-use `sbt testOnly Perfomance`
+use `sbt testOnly Performance`
