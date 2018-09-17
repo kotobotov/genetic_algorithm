@@ -4,7 +4,7 @@ import org.scalameter._
 /**
   * Created by Kotobotov.ru on 17.09.2018.
   */
-class Perfomance extends FreeSpec {
+class Performance extends FreeSpec {
   val target = "How many monkeys does it take to produce Shakespeare?"
   val geneSize = target.length
   val mutationRate = 3
@@ -17,9 +17,7 @@ class Perfomance extends FreeSpec {
       .toDouble / geneSize
   }
 
-  "with 10 mills/evaluation simulation" in {
-
-    @volatile var seqResult = false
+  "performance should be less than 50 sec" in {
 
     @volatile var parResult = false
 
@@ -31,18 +29,14 @@ class Perfomance extends FreeSpec {
     ) withWarmer (new Warmer.Default)
 
     val geneBase = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !?"
-    val seqtime = standardConfig measure {
-      seqResult = GeneticAlgorithm(geneBase, geneSize, fitness, mutationRate).maxScore == 1
+    val parTime = standardConfig measure {
+      parResult = GeneticAlgorithm(geneBase, geneSize, fitness, mutationRate).maxScore >= 1
     }
-    println(s"sequential result = $seqResult")
-    println(s"sequential balancing time: $seqtime ms")
 
-    //val fjtime = standardConfig measure {
-    //  parResult = GeneticAlgorithm(geneBase, geneSize, fitnes, mutationRate).maxScore == 1
-    //}
-    //println(s"parallel result = $parResult")
-    //println(s"parallel balancing time: $fjtime ms")
-    //println(s"speedup: ${seqtime / fjtime}")
+    println(s"parallel result = $parResult")
+    println(s"parallel evolution time: $parTime ms")
+// usually i have 30 sec on 4 core 3.6Ghz maschine
+    assert(parTime.value < 50000.0)
 
   }
 }
