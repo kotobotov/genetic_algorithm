@@ -14,7 +14,7 @@ class Population(size: Int,
   var generation = 0
   var pool = createPool
 
-  def createPool = (0 to size).map(_ => randomDNA(dnaSize)).toParArray
+  def createPool = (0 to size).map(_ => randomDNA(dnaSize)).toParArray.distinct
   def chooseParent = {
 // important! : can only choose DNA with more than 0 score
     var succeed = false
@@ -53,7 +53,7 @@ class Population(size: Int,
     while (newPool.size < 3000) {
       newPool ++= pool.map(dna => crosover(dna))
     }
-    pool = newPool
+    pool = newPool.distinct
     self
   }
 
@@ -70,7 +70,7 @@ class Population(size: Int,
       .filter(_.score > 0.0)
       .toArray
       .sortBy(-_.score)
-      .take(1000)
+      .take(500)
       .par
     lastMaxScore = maxScore
     maxScore = pool.head.score
