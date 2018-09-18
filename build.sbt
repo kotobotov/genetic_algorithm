@@ -11,9 +11,13 @@ import sbt.errorssummary.Plugin.autoImport._
 resolvers += "Sonatype OSS Snapshots" at
   "https://oss.sonatype.org/content/repositories/releases"
 
-libraryDependencies += "com.storm-enroute" %% "scalameter" % "0.8.2"
+libraryDependencies += "com.storm-enroute" %% "scalameter" % "0.8.2" % "test"
 
 testFrameworks += new TestFramework("org.scalameter.ScalaMeterFramework")
 
 parallelExecution in Test := false
 scapegoatVersion in ThisBuild := "1.3.8"
+
+//import com.scalapenos.sbt.prompt.SbtPrompt.autoImport._
+//
+//promptTheme := com.scalapenos.sbt.prompt.PromptThemes.ScalapenosTheme

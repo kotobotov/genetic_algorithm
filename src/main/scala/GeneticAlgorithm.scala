@@ -22,7 +22,6 @@ class GeneticAlgorithm(alpha: String,
       new Population(recomendedSize, dnaSize, randomDNA, fitness, mutationRate)
     myPool
   }
-
   def runEvalution() = {
     val MAX_GENERATION_WITHOUT_EVALUTION = 4
     var notHaveEvalution = 0
@@ -41,6 +40,14 @@ class GeneticAlgorithm(alpha: String,
 }
 
 object GeneticAlgorithm {
+  /**
+    * @param geneBase - baze whitch is used to generate Genes
+    * @param geneSize - numbers element of resulting Gene
+    * @param fitness - your evaluating function from input DNA to Double
+    * @param mutationRate - percent of random mutation (from 1 to 100) [optional]
+    * @return Population class with pool of DNA
+    *
+    */
   def apply(alpha: String,
             dnaSize: Int,
             fitness: DNA => Double,
