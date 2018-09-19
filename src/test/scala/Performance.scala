@@ -7,7 +7,7 @@ import org.scalameter._
 class Performance extends FreeSpec {
   val target = "How many monkeys does it take to produce Shakespeare?"
   val geneSize = target.length
-  val mutationRate = 3
+  val mutationRate = 5
   def fitness = (dna: DNA) => {
     Thread.sleep(1)
     dna.gene

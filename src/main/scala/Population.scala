@@ -3,18 +3,19 @@ import scala.util.Random
 /**
   * Created by Kotobotov.ru on 14.09.2018.
   */
-class Population(size: Int,
+class Population
+  (recommendPoolSize: Int,
                  dnaSize: Int,
                  randomDNA: Int => DNA,
                  fitness: DNA => Double,
                  mutationRate: Int) {
   self =>
   var maxScore = 0.0
-  var lastMaxScore = 0.0
-  var generation = 0
+  var currentGeneration = 0
+  private val recommendSurviveSize = (recommendPoolSize*0.1).toInt
   var pool = createPool
 
-  def createPool = (0 to size).map(_ => randomDNA(dnaSize)).toParArray.distinct
+  def createPool = (0 to recommendPoolSize).map(_ => randomDNA(dnaSize)).toParArray.distinct
   def chooseParent = {
 // important! : can only choose DNA with more than 0 score
     var succeed = false
@@ -28,7 +29,7 @@ class Population(size: Int,
     randomSample
   }
 
-  def crosover(mather: DNA): DNA = {
+  def crossover(mather: DNA): DNA = {
     def mutate(input: DNA) = {
       input.gene.toCharArray
         .map(
@@ -41,17 +42,17 @@ class Population(size: Int,
       input
     }
     val father = chooseParent
-    val spliter = Random.nextInt(dnaSize)
+    val splitter = Random.nextInt(dnaSize)
     val child = DNA(
-      mather.gene.substring(0, spliter) +
-        father.gene.substring(spliter, dnaSize))
+      mather.gene.substring(0, splitter) +
+        father.gene.substring(splitter, dnaSize))
     mutate(child)
   }
 
   def makeNextGeneration() = {
-    var newPool = pool.map(dna => crosover(dna))
-    while (newPool.size < 3000) {
-      newPool ++= pool.map(dna => crosover(dna))
+    var newPool = pool.map(dna => crossover(dna))
+    while (newPool.size < recommendPoolSize) {
+      newPool ++= pool.map(dna => crossover(dna))
     }
     pool = newPool.distinct
     self
@@ -61,7 +62,7 @@ class Population(size: Int,
     pool = pool.map { dna =>
       dna.copy(score = fitness(dna))
     }
-    generation += 1
+    currentGeneration += 1
     self
   }
 
@@ -70,11 +71,11 @@ class Population(size: Int,
       .filter(_.score > 0.0)
       .toArray
       .sortBy(-_.score)
-      .take(500)
+      .take(recommendSurviveSize)
       .par
-    lastMaxScore = maxScore
+    //maxScore = pool.headOption.getOrElse(DNA("", 0.0)).score
     maxScore = pool.head.score
-    println(s"generation: $generation score: $maxScore gene: ${pool.head.gene}")
+    println(s"generation: $currentGeneration score: $maxScore gene: ${pool.headOption.getOrElse(DNA("NO GENE FOUND", 0.0)).gene}")
     self
   }
 }
